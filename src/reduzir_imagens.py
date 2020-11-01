@@ -18,7 +18,8 @@ def reduzir_tamanho_imagens(input_dir, output_dir, ext='.jpg', width=1, height=1
         #redimensionada = imagem.resize((1280, 720))
         redimensionada = imagem.resize((width, height))
         nome_sem_ext = os.path.splitext(nome)[0]
-        imagem.save(os.path.join(output_dir, nome_sem_ext + ext))
+        redimensionada.save(os.path.join(output_dir, nome_sem_ext + ext))
+        #imagem.save(os.path.join(output_dir, nome_sem_ext + ext))
 
 def button_click(tk):
     fields = tk.value()
