@@ -1,12 +1,12 @@
 # coding: utf-8
-from tkinter import *
+import tkinter
+import tkinter.ttk
 from tkinter import filedialog
-from tkinter import ttk
 
-from . import common
+from . import slider
     
 
-class TelaRedimensionar(Frame):
+class TelaRedimensionar(tkinter.ttk.Frame):
     PADX = PADY = 10
     
     def __init__(self, master, control, *args, **kwargs):
@@ -22,12 +22,8 @@ class TelaRedimensionar(Frame):
         super(TelaRedimensionar, self).__init__(master, *args, **kwargs)
         
         self._control = control
-        self._input = StringVar()
-        self._output = StringVar()
-    
-        self._criar_estilo_ent()
-        self._criar_estilo_btn()
-        self._criar_estilo_label()
+        self._input = tkinter.StringVar()
+        self._output = tkinter.StringVar()
         
         self._criar_lbl_desc()
         self._criar_input()
@@ -40,14 +36,15 @@ class TelaRedimensionar(Frame):
         '''
         Criar campo p/ usuario definir o diretorio de entrada.
         '''
-        frame = Frame(self)
+        frame = tkinter.ttk.Frame(self)
         
-        entry = ttk.Entry(frame, textvariable=self._input, 
+        entry = tkinter.ttk.Entry(frame, textvariable=self._input, 
                           font=('Arial', 16, 'normal'),
                           style='Converter.TEntry')
         
-        btn_perg_ent = ttk.Button(frame, text='Dir Entrada*', 
+        btn_perg_ent = tkinter.ttk.Button(frame, text='Dir Entrada*', 
                                   style='Converter.TButton',
+                                  width=15,
                                   command=self._perg_dir_ent)
         
         entry.pack(side='left', fill='both', expand=True, 
@@ -62,14 +59,15 @@ class TelaRedimensionar(Frame):
         '''
         Criar campo p/ usuario definir o diretorio de saida.
         '''        
-        frame = Frame(self)
+        frame = tkinter.ttk.Frame(self)
         
-        entry = ttk.Entry(frame, textvariable=self._output, 
+        entry = tkinter.ttk.Entry(frame, textvariable=self._output, 
                             font=('Arial', 16, 'normal'),
                             style='Converter.TEntry')
         
-        btn_perg_ent = ttk.Button(frame, text='Dir Saida*', 
+        btn_perg_ent = tkinter.ttk.Button(frame, text='Dir Saida*', 
                                   style='Converter.TButton',
+                                  width=15,
                                   command=self._perg_dir_sai)
         
         entry.pack(side='left', fill='both', expand=True, 
@@ -81,18 +79,34 @@ class TelaRedimensionar(Frame):
         frame.pack(fill='x', padx=self.PADX, pady=self.PADY)
     
     def _criar_larg(self):
-        self._larg = common.Slider(self, 'Largura*')
-        self._larg.pack(fill='x', padx=self.PADX*2, pady=self.PADY*2)
+        '''
+        Criar slider p/ usuario definir a largura da imagem.
+        '''
+        frame = tkinter.ttk.Frame(self)
+        label = tkinter.ttk.Label(frame, text='Largura*', width=10)
+        self._larg = slider.Slider(frame, from_=1, to=1920)
+
+        frame.pack(fill='x', padx=self.PADX*2, pady=self.PADY*2)
+        self._larg.pack(side='left', fill='x', expand=True)
+        label.pack(side='left', fill='x')
     
     def _criar_altu(self):
-        self._altu = common.Slider(self, 'Altura*')
-        self._altu.pack(fill='x', padx=self.PADX*2, pady=self.PADY*2)
-        
+        '''
+        Criar slider p/ usuario definir a altura da imagem.
+        '''
+        frame = tkinter.ttk.Frame(self)
+        label = tkinter.ttk.Label(frame, text='Altura*', width=10)
+        self._altu = slider.Slider(frame, from_=1, to=1080)
+
+        frame.pack(fill='x', padx=self.PADX*2, pady=self.PADY*2)
+        self._altu.pack(side='left', fill='x', expand=True)
+        label.pack(side='left', fill='x')
+   
     def _criar_btn_conf(self):
         '''
         Criar botao p/ usuario confirmar os campos.
         '''        
-        btn = ttk.Button(self, text='Confirmar', style='Converter.TButton', 
+        btn = tkinter.ttk.Button(self, text='Confirmar', style='Converter.TButton', 
                                             command=self._cham_redim)
         
         btn.pack(fill='x', expand=True, anchor='s', 
@@ -103,8 +117,11 @@ class TelaRedimensionar(Frame):
         '''
         Criar label com a descricao da tela.
         '''        
-        label = ttk.Label(self, anchor='center', style='Converter.TLabel',
-                  text='Redimensionar imagens de um  diretorio.')
+        label = tkinter.ttk.Label(
+            self, 
+            anchor='center', 
+            style='Converter.TLabel',
+            text='Redimensionar imagens de um  diretorio.')
         
         label.pack(fill='x', padx=self.PADX, pady=self.PADY)
     
@@ -122,27 +139,10 @@ class TelaRedimensionar(Frame):
     
     def _cham_redim(self):
         '''
-        Chama o metodo redimensionar_imagens do objeto control.
+        Chama o metodo redimensionar_imagens da camada de controle.
         '''
         self._control.redimensionar_imagens(self._input.get(), 
                                             self._output.get(), 
-                                            self._larg.atual(), 
-                                            self._altu.atual())
+                                            self._larg.valor, 
+                                            self._altu.valor)
         
-    
-    def _criar_estilo_ent(self):
-        estilo = ttk.Style()
-        estilo.configure('Converter.TEntry', font=('Arial', 14, 'normal'),                                                               
-                                                            borderwidth=3,
-                                                            relief='raised')
-
-    def _criar_estilo_btn(self):
-        estilo = ttk.Style()
-        estilo.configure('Converter.TButton', font=('Arial', 17, 'normal'), 
-                                                                width=15,
-                                                            borderwidth=3,
-                                                            relief='raised')
-    
-    def _criar_estilo_label(self):
-        estilo = ttk.Style()
-        estilo.configure('Converter.TLabel', font=('Arial', 18, 'normal'))

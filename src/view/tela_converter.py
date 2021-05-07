@@ -1,10 +1,10 @@
 # coding: utf-8
-from tkinter import *
+import tkinter
+import tkinter.ttk
 from tkinter import filedialog
-from tkinter import ttk
 
 
-class TelaConverter(Frame):
+class TelaConverter(tkinter.ttk.Frame):
     PADX = PADY = 10
     
     def __init__(self, master, control, *args, **kwargs):
@@ -20,35 +20,29 @@ class TelaConverter(Frame):
         super(TelaConverter, self).__init__(master, *args, **kwargs)
         
         self._control = control
-        self._input = StringVar()
-        self._output = StringVar()
-        self._ext = StringVar()
-        
-        self._criar_estilo_ent()
-        self._criar_estilo_btn()
-        self._criar_estilo_dropdown()
-        self._criar_estilo_label()
+        self._input = tkinter.StringVar()
+        self._output = tkinter.StringVar()
+        self._ext = tkinter.StringVar()
         
         self._criar_lbl_desc()
         self._criar_input()
         self._criar_output()
         self._criar_dropdown()
         self._criar_btn_conf()
-        
-        print(self._ext.get())
     
     def _criar_input(self):
         '''
         Criar campo p/ usuario definir o diretorio de entrada.
         '''
-        frame = Frame(self)
+        frame = tkinter.ttk.Frame(self)
         
-        entry = ttk.Entry(frame, textvariable=self._input, 
+        entry = tkinter.ttk.Entry(frame, textvariable=self._input, 
                           font=('Arial', 16, 'normal'),
                           style='Converter.TEntry')
         
-        btn_perg_ent = ttk.Button(frame, text='Dir Entrada*', 
+        btn_perg_ent = tkinter.ttk.Button(frame, text='Dir Entrada*', 
                                   style='Converter.TButton',
+                                  width=15,
                                   command=self._perg_dir_ent)
         
         entry.pack(side='left', fill='both', expand=True, 
@@ -63,14 +57,15 @@ class TelaConverter(Frame):
         '''
         Criar campo p/ usuario definir o diretorio de saida.
         '''        
-        frame = Frame(self)
+        frame = tkinter.ttk.Frame(self)
         
-        entry = ttk.Entry(frame, textvariable=self._output, 
+        entry = tkinter.ttk.Entry(frame, textvariable=self._output, 
                             font=('Arial', 16, 'normal'),
                             style='Converter.TEntry')
         
-        btn_perg_ent = ttk.Button(frame, text='Dir Saida*', 
+        btn_perg_ent = tkinter.ttk.Button(frame, text='Dir Saida*', 
                                   style='Converter.TButton',
+                                  width=15,
                                   command=self._perg_dir_sai)
         
         entry.pack(side='left', fill='both', expand=True, 
@@ -88,8 +83,8 @@ class TelaConverter(Frame):
         opcoes = ['.png', '.jpg']
         
         
-        frame = Frame(self)
-        dropdown = ttk.OptionMenu(frame, self._ext, opcoes[0], *opcoes, 
+        frame = tkinter.ttk.Frame(self)
+        dropdown = tkinter.ttk.OptionMenu(frame, self._ext, opcoes[0], *opcoes, 
                                          style='Converter.TMenubutton')
         
         dropdown.pack(fill='x', padx=self.PADX, pady=self.PADY)
@@ -99,7 +94,7 @@ class TelaConverter(Frame):
         '''
         Criar botao p/ usuario confirmar os campos.
         '''        
-        btn = ttk.Button(self, text='Confirmar', style='Converter.TButton', 
+        btn = tkinter.ttk.Button(self, text='Confirmar', style='Converter.TButton', 
                                             command=self._cham_conv)
         
         btn.pack(fill='x', expand=True, anchor='s', 
@@ -109,9 +104,12 @@ class TelaConverter(Frame):
     def _criar_lbl_desc(self):
         '''
         Criar label com a descricao da tela.
-        '''        
-        label = ttk.Label(self, anchor='center', style='Converter.TLabel',
-                  text='Converter imagens de um diretorio alterando sua extensao.')
+        '''
+        label = tkinter.ttk.Label(
+            self, 
+            anchor='center', 
+            style='Converter.TLabel',
+            text='Converter imagens de um diretorio alterando sua extensao.')
         
         label.pack(fill='x', padx=self.PADX, pady=self.PADY)
     
@@ -129,29 +127,8 @@ class TelaConverter(Frame):
     
     def _cham_conv(self):
         '''
-        Chama o metodo converter_imagens do objeto control.
+        Chama o metodo converter_imagens da camada de controle.
         '''
         self._control.converter_imagens(self._input.get(), 
                                         self._output.get(), 
                                         self._ext.get())
-    
-    def _criar_estilo_ent(self):
-        estilo = ttk.Style()
-        estilo.configure('Converter.TEntry', font=('Arial', 14, 'normal'),                                                               
-                                                            borderwidth=3,
-                                                            relief='raised')
-
-    def _criar_estilo_btn(self):
-        estilo = ttk.Style()
-        estilo.configure('Converter.TButton', font=('Arial', 17, 'normal'), 
-                                                                width=15,
-                                                            borderwidth=3,
-                                                            relief='raised')
-    
-    def _criar_estilo_dropdown(self):
-        estilo = ttk.Style()
-        estilo.configure('Converter.TMenubutton', font=('Arial', 14, 'normal'))
-
-    def _criar_estilo_label(self):
-        estilo = ttk.Style()
-        estilo.configure('Converter.TLabel', font=('Arial', 18, 'normal'))

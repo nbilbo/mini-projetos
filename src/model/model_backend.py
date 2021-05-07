@@ -4,7 +4,7 @@ from PIL import Image
 from . import model_exceptions
 
 
-def eh_imagem(nome_arquivo):
+def eh_imagem(nome_arquivo : str) -> bool:
     '''
     Verificar se um arquivo e uma imagem.
     
@@ -21,7 +21,7 @@ def eh_imagem(nome_arquivo):
     else:
         return False
 
-def converter_imagens(input_dir, output_dir, ext='.jpg'):
+def converter_imagens(input_dir : str, output_dir : str, ext : str='.jpg'):
     '''
     Converter o tipo de todas as imagens em um diretorio.
     
@@ -48,7 +48,8 @@ def converter_imagens(input_dir, output_dir, ext='.jpg'):
     else:
         raise model_exceptions.CamposVazios(f'Informe todos os campos.')
 
-def redimensionar_imagens(input_dir, output_dir, width, height):
+def redimensionar_imagens(input_dir : str, output_dir : str, 
+                                width : int, height : int):
     '''
     Altera a largura e altura de todas as  imagens em um diretorio.
     
